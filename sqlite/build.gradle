@@ -1,4 +1,10 @@
 apply plugin: 'com.android.model.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+ext {
+    publishVersion = "1.0"
+}
 
 model {
     android {
@@ -9,7 +15,7 @@ model {
             minSdkVersion.apiLevel = 15
             targetSdkVersion.apiLevel = 21
             versionCode = 1
-            versionName = "1.0"
+            versionName = publishVersion
         }
     }
 
@@ -41,6 +47,90 @@ model {
     }
 
 }
+
+def siteUrl = 'https://github.com/aivanyuk/sqlite-bindings'
+def gitUrl = 'https://github.com/aivanyuk/sqlite-bindings.git'
+def issuesUrl = 'https://github.com/aivanyuk/sqlite-bindings/issues'
+
+group = 'org.sqlite'
+version = publishVersion
+
+bintray {
+    user = bintray.user
+    key = bintray.key
+    configurations = ['archives']
+    pkg {
+        repo = 'sqlite'
+        name = project.name
+        desc = 'SQLite Android bindings'
+        websiteUrl = siteUrl
+        issueTrackerUrl = issuesUrl
+        vcsUrl = gitUrl
+        licenses = ['Apache-2.0']
+        labels = ['aar', 'android', 'sqlite']
+        publicDownloadNumbers = true
+        version {
+            name = publishVersion
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'SQLite Android bindings'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'aivanyuk'
+                        name 'Artyom Ivanyuk'
+                        email 'ivanyuk.artyom@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+
+            }
+        }
+    }
+}
+
+
+
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+//
+//task findConventions << {
+//    println project.getConvention()
+//}
 
 
 dependencies {
