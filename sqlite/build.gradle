@@ -3,18 +3,18 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 ext {
-    publishVersion = "1.0"
+    publishVersion = "1.1"
 }
 
 model {
     android {
-        compileSdkVersion = 21
+        compileSdkVersion = 19
         buildToolsVersion = "23.0.2"
 
         defaultConfig.with {
             minSdkVersion.apiLevel = 15
-            targetSdkVersion.apiLevel = 21
-            versionCode = 1
+            targetSdkVersion.apiLevel = 19
+            versionCode = 2
             versionName = publishVersion
         }
     }
@@ -28,8 +28,8 @@ model {
 
     android.ndk {
         moduleName = "sqliteX"
-        toolchain = "gcc"
-        toolchainVersion = "4.9"
+        toolchain = "clang"
+        toolchainVersion = "3.6"
         CFlags.add("-DSQLITE_TEMP_STORE=3")
         CFlags.add("-DHAVE_CONFIG_H -DKHTML_NO_EXCEPTIONS -DGKWQ_NO_JAVA")
         CFlags.add("-DNO_SUPPORT_JS_BINDING -DQT_NO_WHEELEVENT -DKHTML_NO_XBL")
@@ -56,8 +56,8 @@ group = 'org.sqlite'
 version = publishVersion
 
 bintray {
-    user = bintray.user
-    key = bintray.key
+    user = project.property('bintray.user')
+    key = project.property('bintray.key')
     configurations = ['archives']
     pkg {
         repo = 'sqlite'
