@@ -12,6 +12,6 @@ repositories {
 
 dependecies {
 
-  compile 'org.sqlite:sqlite:1.0'
+  compile 'org.sqlite:sqlite:1.1'
 }
 ```
